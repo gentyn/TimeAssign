@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+    <title>TA - Add Breaks</title>
+    <ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+    <img src="/static/3.png">
+    <center>
+    <h3>Add a break to the Time Assign database:</h3>
+<form method="post" action="/addBreak/">
+  {% csrf_token %}
+    <table>
+        <tr>
+            <td>Break Name:</td>
+            <td><input type="text" name="Break Name"></td>
+        </tr>
+        <tr>
+            <td>Start Time:</td>
+            <td><input type = "time" name="startTime"></td>
+        </tr>
+        <tr>
+            <td>End Time:</td>
+            <td><input type = "time" name="endTime"></td>
+        </tr>
+        <tr>
+            <td>Day:</td>
+            <td><input type = "checkbox" name="M">M
+            <input type = "checkbox" name="T">T
+            <input type = "checkbox" name="W">W
+            <input type = "checkbox" name="R">R
+            <input type = "checkbox" name="F">F
+            <input type = "checkbox" name="S">S</td>
+        </tr>
+        <tr><td></td></tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Add"></td>
+        </tr>
+    </table>
+  </form>
+  <p>{{message}}</p>
+    </center>
+{% endblock content %}

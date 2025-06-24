@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+    <title>TA - View Courses</title>
+    <ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+    <img src="/static/11.png">
+    <center>
+    <h3>Courses in the Time Assign database:</h3>
+    <p>Click on a course title to edit its information</p>
+        {% for course in courses %}
+                <form action="/editCourse" method="get">
+                    <input type="submit" name="Edit Course" value={{ course.course_name }}>
+                </form>
+            <p>Start Time: {{ course.start_time }} End Time: {{ course.end_time }}
+                Instructor: {{ course.instructor }} TA(s): {{ course.ta }}</p>
+        {% endfor %}
+  {% csrf_token %}
+  <p>{{message}}</p></center>
+{% endblock content %}

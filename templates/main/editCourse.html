@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <title>TA - Edit Courses</title>
+<ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+    <img src="/static/7.png">
+    <center>
+    <h1>Edit Course</h1>
+    <table>
+<form method="post" action="/editCourse/">
+        {% if course.course_name == request.session.course_name %}
+              {% csrf_token %}
+
+            <tr>
+                <td>Course Name:</td>
+                <td><input type="text" name="Course Name" readonly="readonly" value={{ course.course_name }}></td>
+            </tr>
+            <tr>
+               <td>Start Time:</td>
+               <td><input type = "time" name="startTime" value={{ start }} min="07:00" max="20:50"></td>
+            </tr>
+            <tr>
+               <td>End Time:</td>
+               <td><input type = "time" name="endTime" value={{ end }} min="07:00" max="20:50"></td>
+            </tr>
+            <tr>
+               <td>Day:</td>
+               <td>{% if course.mon_flag == True %}
+            <input type = "checkbox" name="M" checked>M
+            {% else %}
+            <input type = "checkbox" name="M" >M
+            {% endif %}
+            {% if course.tues_flag == True %}
+            <input type = "checkbox" name="T" checked>T
+            {% else %}
+            <input type = "checkbox" name="T" >T
+            {% endif %}
+            {% if course.wed_flag == True %}
+            <input type = "checkbox" name="W" checked>W
+            {% else %}
+            <input type = "checkbox" name="W" >W
+            {% endif %}
+            {% if course.thurs_flag == True %}
+            <input type = "checkbox" name="R" checked>R
+            {% else %}
+            <input type = "checkbox" name="R" >R
+            {% endif %}
+            {% if course.fri_flag == True %}
+            <input type = "checkbox" name="F" checked>F
+            {% else %}
+            <input type = "checkbox" name="F" >F
+            {% endif %}
+            {% if course.sat_flag == True %}
+            <input type = "checkbox" name="S" checked>S
+            {% else %}
+            <input type = "checkbox" name="S" >S
+            {% endif %}</td>
+            </tr>
+            <tr>
+               <td>Ta:</td>
+               <td><input type = "text" name="ta" value={{ course.ta }}></td>
+            </tr>
+            <tr>
+               <td>Instructor:</td>
+               <td><input type = "text" name="instructor" value={{ course.instructor }}></td>
+            </tr>
+            <tr>
+                <td></td><td><input type="submit" value="Edit"></td>
+            </tr>
+        {% endif %}
+
+
+
+  </form>
+    </table>
+    </center>
+  <p>{{message}}</p></center>
+{% endblock content %}

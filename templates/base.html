@@ -1,0 +1,59 @@
+{% load static %}
+        <!DOCTYPE html>
+
+<link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+<html lang="en">
+<style>
+
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #FFBD00;
+}
+
+li {
+  float: left;
+}
+
+img {
+     width: 100%;
+}
+
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 14px 8px;
+  text-decoration: none;
+  font-family: "arial";
+}
+p {
+  font-family: "arial";
+}
+h3 {
+    font-family: "arial";
+    font-weight: normal;
+
+}
+
+li a:hover:not(.active) {
+  background-color: #ffcf4d
+}
+
+.active {
+  background-color: #ffcf4d;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+</head>
+<body>
+    {% block content %}{% endblock content %}
+</body>
+</html>

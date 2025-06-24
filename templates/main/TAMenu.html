@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<title>TA - Menu</title>
+<body>
+
+<ul>
+  <li><a href="/editSchedule">Edit Schedule</a></li>
+    <li><a href="/validate">Validate</a></li>
+  <li><a href="http://www.robtyndall.com">TA appreciation page</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+
+<img src="/static/10.png" alt="University of Milwaukee!">
+
+  {% csrf_token %}
+    <ul>
+        <li><a>Welcome to the {{message}} main menu!</a></li>
+
+    </ul>
+{% endblock content %}
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<title>TA - Time Assign!</title>
+       <ul><li><a>You have successfully logged out.</a></li>
+    <li style="float:right"><a class="active" href="/">Log in</a></li>
+    </ul>
+
+    <img src="/static/cops.jpg">
+
+  {% csrf_token %}
+  <p>{{message}}</p>
+{% endblock content %}

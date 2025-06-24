@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+    <title>TA - Add Users</title>
+    <ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+
+<img src="/static/4.png" alt="University of Milwaukee!">
+
+<center>
+    <h3>Add a user to the Time Assign database:</h3>
+    <form method="post" action="/addUser/">
+  {% csrf_token %}
+        <table>
+        <tr>
+            <td>UserName:</td>
+            <td><input type="text" name="username">
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type = "password" name="pass"></td>
+        </tr>
+        <tr>
+            <td>Name:</td>
+            <td><input type = "text" name="realName"></td>
+        </tr>
+        <tr>
+            <td>User type:</td>
+            <td><input type="radio" name="usertype" value="instructor" checked>Instructor:<input type="radio" name="usertype" value="ta"> TA</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type = "email" name="email"></td>
+        </tr>
+        <tr>
+            <td><input type="submit"></td>
+        </tr>
+</form></center>
+  <p>{{message}}</p>
+{% endblock content %}

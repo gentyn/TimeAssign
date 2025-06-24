@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+    <title>TA - Add Courses</title>
+    <ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+    <img src="/static/3.png">
+    <center>
+    <h3>Add a course to the Time Assign database:</h3>
+<form method="post" action="/addCourse/">
+  {% csrf_token %}
+    <table>
+        <tr>
+            <td>Course Name:</td>
+            <td><input type="text" name="Course Name"></td>
+        </tr>
+        <tr>
+            <td>Start Time:</td>
+            <td><input type = "time" name="startTime" min="07:00" max="20:50"></td>
+        </tr>
+        <tr>
+            <td>End Time:</td>
+            <td><input type = "time" name="endTime" min="07:00" max="20:50"></td>
+        </tr>
+        <tr>
+            <td>Day:</td>
+            <td><input type = "checkbox" name="M">M
+            <input type = "checkbox" name="T">T
+            <input type = "checkbox" name="W">W
+            <input type = "checkbox" name="R">R
+            <input type = "checkbox" name="F">F
+            <input type = "checkbox" name="S">S</td>
+        </tr>
+        <tr>
+            <td>Course Type:</td>
+            <td><select class = "select" name="CourseType">
+                <option value = 'LEC'> Lecture </option>
+                <option value = 'LAB'> Lab </option>
+                <option value = 'ON'> Online </option>
+                <option value = 'GRD'> Grading </option>
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Ta:</td>
+            <td><input type = "text" name="ta"></td>
+        </tr>
+        <tr>
+            <td>Instructor:</td>
+            <td><input type = "text" name="instructor"></td>
+        </tr>
+        <tr>
+             <td>Lecture (if lab)</td>
+             <td><select class = "select" name="availablelectures" id="availablelectures">
+                 <option value= 0 > None </option>
+                {%  for i in courses %}
+                    <option value="{{ i.id }}">{{i.course_name}}    </option>
+                {% endfor %}
+                </select>
+             </td>
+        </tr>
+        <tr>
+            <td><input type="submit"></td>
+        </tr>
+    </table>
+  </form>
+  <p>{{message}}</p>
+    </center>
+{% endblock content %}

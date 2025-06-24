@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <style>
+table {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2;}
+
+tr:hover {background-color: #ddd;}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #FFBD00;
+  color: black;
+}
+</style>
+    <title>TA - View Users</title>
+<ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+    <img src="/static/12.png">
+
+        <table style="width:100%" border="1" >
+            <tr>
+                <th> Name </th>
+                <th> User Type </th>
+                <th> Username </th>
+                <th> Email Address </th>
+            </tr>
+
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.usertype }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+  {% csrf_token %}
+  <p>{{message}}</p></center>
+{% endblock content %}

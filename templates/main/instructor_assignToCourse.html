@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <title>TA - Assign to Courses</title>
+<ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+<img src="/static/5.png" alt="University of Milwaukee!">
+
+    <body>
+
+        <form action="/instructor_assignToCourse/" method="post">
+            {% csrf_token %}
+            <label for="availableUsers"><h3>TA to be assigned to a lab</h3></label>
+        <div class="select">
+            <select class="select" name="availableUsers" id="availableUsers">
+                {%  for i in users %}
+                    <option value="{{ i.id }}">{{ i.usertype }} {{i.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+            <label for="availableCourses"><h3>Course Assignment (Labs)</h3></label>
+        <div class="select">
+            <select name="availableCourses" id="availableCourses">
+                {%  for i in courses %}
+                    <option value="{{ i.id }}">{{i.course_name}} Instructor: {{ i.instructor }} TA: {{ i.ta1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+  <p>{{message}}</p>
+{% endblock content %}

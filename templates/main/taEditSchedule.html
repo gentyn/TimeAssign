@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <title>TA - Edit Schedule</title>
+<ul>
+  <li><a href="/menu">Main Menu</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+<img src="/static/5.png" alt="University of Milwaukee!">
+
+    <body>
+ <form action="/addBreak" method="get">
+        <input type="submit" name="Add Break" value="Add Break">
+    </form>
+    <h3>My Schedule:</h3>
+    <p>Click on a break title to edit its information</p>
+        {% for break in breaks %}
+            {% if break.userid == request.session.member_id  %}
+                <form action="/editBreak" method="get">
+                    <input type="submit" name="Edit Break" value={{ break.break_name }}>
+                </form>
+            <p>Start Time: {{ break.start_time }} End Time: {{ break.end_time }}</p>
+            {% endif %}
+        {% endfor %}
+    </body>
+  <p>{{message}}</p>
+{% endblock content %}

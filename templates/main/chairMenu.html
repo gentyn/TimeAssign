@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<title>TA - Menu</title>
+<body>
+
+<ul>
+  <li><a href="/addUser">Add User</a></li>
+  <li><a href="/addCourse">Add Course</a></li>
+  <li><a href="/viewUsers">View Users</a></li>
+  <li><a href="/viewCourse">View Courses</a></li>
+  <li><a href="/assignToCourse">Assign TA to Course</a></li>
+  <li><a href="/validate">Validate</a></li>
+  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
+</ul>
+
+<img src="/static/2.png" alt="University of Milwaukee!">
+
+  {% csrf_token %}
+    <ul>
+        <li><a>Welcome to the {{message}} main menu!</a></li>
+
+    </ul>
+{% endblock content %}
+
+</body>
+</html>
