@@ -1,12 +1,44 @@
 {% extends "base.html" %}
+
+{% block title %}Logout{% endblock %}
+
 {% block content %}
-<title>TA - Time Assign!</title>
-       <ul><li><a>You have successfully logged out.</a></li>
-    <li style="float:right"><a class="active" href="/">Log in</a></li>
-    </ul>
+<div class="min-h-[80vh] flex items-center justify-center">
+    <div class="max-w-md w-full text-center">
+        <!-- Logo -->
+        <div class="mb-8">
+            <img src="/static/1.png" alt="University Logo" class="mx-auto h-32 object-contain">
+        </div>
 
-    <img src="/static/cops.jpg">
+        <!-- Logout Card -->
+        <div class="card">
+            <div class="mb-6">
+                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
+                    You have been logged out
+                </h2>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">
+                    Thank you for using TimeAssign
+                </p>
+            </div>
 
-  {% csrf_token %}
-  <p>{{message}}</p>
-{% endblock content %}
+            <div class="space-y-4">
+                <a href="/" class="btn-primary w-full">
+                    Sign in again
+                </a>
+                <a href="/admin/" class="btn-secondary w-full">
+                    Admin Login
+                </a>
+            </div>
+        </div>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-200">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

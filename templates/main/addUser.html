@@ -1,41 +1,83 @@
 {% extends "base.html" %}
+
+{% block title %}Add User{% endblock %}
+
 {% block content %}
-    <title>TA - Add Users</title>
-    <ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center mb-4">
+            <img src="/static/5.png" alt="University Logo" class="h-16 mr-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add New User</h1>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Create a new user account</p>
+            </div>
+        </div>
+    </header>
 
-<img src="/static/4.png" alt="University of Milwaukee!">
+    <div class="max-w-2xl">
+        <div class="card">
+            <form method="post" action="/addUser/" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Username
+                        </label>
+                        <input type="text" name="username" id="username" required 
+                               class="input-field mt-1" placeholder="Enter username">
+                    </div>
 
-<center>
-    <h3>Add a user to the Time Assign database:</h3>
-    <form method="post" action="/addUser/">
-  {% csrf_token %}
-        <table>
-        <tr>
-            <td>UserName:</td>
-            <td><input type="text" name="username">
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type = "password" name="pass"></td>
-        </tr>
-        <tr>
-            <td>Name:</td>
-            <td><input type = "text" name="realName"></td>
-        </tr>
-        <tr>
-            <td>User type:</td>
-            <td><input type="radio" name="usertype" value="instructor" checked>Instructor:<input type="radio" name="usertype" value="ta"> TA</td>
-        </tr>
-        <tr>
-            <td>Email:</td>
-            <td><input type = "email" name="email"></td>
-        </tr>
-        <tr>
-            <td><input type="submit"></td>
-        </tr>
-</form></center>
-  <p>{{message}}</p>
-{% endblock content %}
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Password
+                        </label>
+                        <input type="password" name="password" id="password" required 
+                               class="input-field mt-1" placeholder="Enter password">
+                    </div>
+
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Full Name
+                        </label>
+                        <input type="text" name="name" id="name" required 
+                               class="input-field mt-1" placeholder="Enter full name">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" required 
+                               class="input-field mt-1" placeholder="Enter email address">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label for="usertype" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            User Type
+                        </label>
+                        <select name="usertype" id="usertype" required 
+                                class="input-field mt-1">
+                            <option value="">Select user type</option>
+                            <option value="chair">Chair</option>
+                            <option value="instructor">Instructor</option>
+                            <option value="ta">TA</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="/menu/" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Add User</button>
+                </div>
+            </form>
+        </div>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

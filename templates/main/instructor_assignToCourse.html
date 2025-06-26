@@ -1,36 +1,116 @@
 {% extends "base.html" %}
 
+{% block title %}Assign TAs to Courses{% endblock %}
+
 {% block content %}
-    <title>TA - Assign to Courses</title>
-<ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-<img src="/static/5.png" alt="University of Milwaukee!">
-
-    <body>
-
-        <form action="/instructor_assignToCourse/" method="post">
-            {% csrf_token %}
-            <label for="availableUsers"><h3>TA to be assigned to a lab</h3></label>
-        <div class="select">
-            <select class="select" name="availableUsers" id="availableUsers">
-                {%  for i in users %}
-                    <option value="{{ i.id }}">{{ i.usertype }} {{i.name}}</option>
-                {% endfor %}
-            </select>
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center mb-4">
+            <img src="/static/10.png" alt="University Logo" class="h-16 mr-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Assign TAs to Courses</h1>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Manage TA assignments for your courses</p>
+            </div>
         </div>
-            <label for="availableCourses"><h3>Course Assignment (Labs)</h3></label>
-        <div class="select">
-            <select name="availableCourses" id="availableCourses">
-                {%  for i in courses %}
-                    <option value="{{ i.id }}">{{i.course_name}} Instructor: {{ i.instructor }} TA: {{ i.ta1 }}</option>
-                {% endfor %}
-            </select>
+    </header>
+
+    <div class="max-w-4xl">
+        <div class="card">
+            <form method="post" action="/instructor_assignToCourse/" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="availableUsers" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Select TA
+                        </label>
+                        <select name="availableUsers" id="availableUsers" required 
+                                class="input-field">
+                            <option value="">Choose a TA...</option>
+                            {% for user in users %}
+                            <option value="{{ user.id }}">
+                                {{ user.name }} - {{ user.username }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="availableCourses" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Select Course
+                        </label>
+                        <select name="availableCourses" id="availableCourses" required 
+                                class="input-field">
+                            <option value="">Choose a course...</option>
+                            {% for course in courses %}
+                            <option value="{{ course.id }}">
+                                {{ course.course_name }} ({{ course.start_time|time:"g:i A" }} - {{ course.end_time|time:"g:i A" }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="/menu/" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Make Assignment</button>
+                </div>
+            </form>
         </div>
-        <br>
-            <input type="submit" value="Submit">
-        </form>
-    </body>
-  <p>{{message}}</p>
-{% endblock content %}
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'wrong' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <!-- Current Assignments Overview -->
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Current Assignments</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Available TAs -->
+                <div class="card">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Available TAs</h3>
+                    <div class="space-y-2">
+                        {% for user in users %}
+                        <div class="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                            <div>
+                                <span class="font-medium text-gray-900 dark:text-white">{{ user.name }}</span>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">({{ user.username }})</span>
+                            </div>
+                            <span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                TA
+                            </span>
+                        </div>
+                        {% empty %}
+                        <p class="text-gray-500 dark:text-gray-400 text-center py-4">No TAs available</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Your Courses -->
+                <div class="card">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Your Courses</h3>
+                    <div class="space-y-2">
+                        {% for course in courses %}
+                        <div class="py-2 border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                            <div class="font-medium text-gray-900 dark:text-white">{{ course.course_name }}</div>
+                            <div class="text-sm text-gray-500 dark:text-gray-400">
+                                {{ course.start_time|time:"g:i A" }} - {{ course.end_time|time:"g:i A" }}
+                            </div>
+                            {% if course.ta1 or course.ta2 or course.ta3 or course.ta4 %}
+                            <div class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                                Assigned TAs: {{ course.ta1|default:"" }} {{ course.ta2|default:"" }} {{ course.ta3|default:"" }} {{ course.ta4|default:"" }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                        <p class="text-gray-500 dark:text-gray-400 text-center py-4">No courses assigned</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

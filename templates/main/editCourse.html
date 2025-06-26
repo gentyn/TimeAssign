@@ -1,81 +1,112 @@
 {% extends "base.html" %}
 
+{% block title %}Edit Course{% endblock %}
+
 {% block content %}
-    <title>TA - Edit Courses</title>
-<ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-    <img src="/static/7.png">
-    <center>
-    <h1>Edit Course</h1>
-    <table>
-<form method="post" action="/editCourse/">
-        {% if course.course_name == request.session.course_name %}
-              {% csrf_token %}
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/12.png" alt="University Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Edit Course</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Modify course information and settings</p>
+                </div>
+            </div>
+            <a href="/viewCourse/" class="btn-secondary">Back to Courses</a>
+        </div>
+    </header>
 
-            <tr>
-                <td>Course Name:</td>
-                <td><input type="text" name="Course Name" readonly="readonly" value={{ course.course_name }}></td>
-            </tr>
-            <tr>
-               <td>Start Time:</td>
-               <td><input type = "time" name="startTime" value={{ start }} min="07:00" max="20:50"></td>
-            </tr>
-            <tr>
-               <td>End Time:</td>
-               <td><input type = "time" name="endTime" value={{ end }} min="07:00" max="20:50"></td>
-            </tr>
-            <tr>
-               <td>Day:</td>
-               <td>{% if course.mon_flag == True %}
-            <input type = "checkbox" name="M" checked>M
-            {% else %}
-            <input type = "checkbox" name="M" >M
-            {% endif %}
-            {% if course.tues_flag == True %}
-            <input type = "checkbox" name="T" checked>T
-            {% else %}
-            <input type = "checkbox" name="T" >T
-            {% endif %}
-            {% if course.wed_flag == True %}
-            <input type = "checkbox" name="W" checked>W
-            {% else %}
-            <input type = "checkbox" name="W" >W
-            {% endif %}
-            {% if course.thurs_flag == True %}
-            <input type = "checkbox" name="R" checked>R
-            {% else %}
-            <input type = "checkbox" name="R" >R
-            {% endif %}
-            {% if course.fri_flag == True %}
-            <input type = "checkbox" name="F" checked>F
-            {% else %}
-            <input type = "checkbox" name="F" >F
-            {% endif %}
-            {% if course.sat_flag == True %}
-            <input type = "checkbox" name="S" checked>S
-            {% else %}
-            <input type = "checkbox" name="S" >S
-            {% endif %}</td>
-            </tr>
-            <tr>
-               <td>Ta:</td>
-               <td><input type = "text" name="ta" value={{ course.ta }}></td>
-            </tr>
-            <tr>
-               <td>Instructor:</td>
-               <td><input type = "text" name="instructor" value={{ course.instructor }}></td>
-            </tr>
-            <tr>
-                <td></td><td><input type="submit" value="Edit"></td>
-            </tr>
+    <div class="max-w-4xl">
+        <div class="card">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Editing: {{ course.course_name }}
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Current time: {{ start }} - {{ end }}
+                </p>
+            </div>
+
+            <form method="post" action="/editCourse/" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="course_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Course Name
+                    </label>
+                    <input type="text" name="Course Name" id="course_name" value="{{ course.course_name }}" required 
+                           class="input-field mt-1" placeholder="Enter course name">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Start Time
+                        </label>
+                        <input type="time" name="start_time" id="start_time" value="{{ start }}" required 
+                               class="input-field mt-1">
+                    </div>
+
+                    <div>
+                        <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            End Time
+                        </label>
+                        <input type="time" name="end_time" id="end_time" value="{{ end }}" required 
+                               class="input-field mt-1">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Course Days
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="mon_flag" {% if course.mon_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Monday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="tues_flag" {% if course.tues_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Tuesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="wed_flag" {% if course.wed_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Wednesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="thurs_flag" {% if course.thurs_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Thursday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="fri_flag" {% if course.fri_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Friday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="sat_flag" {% if course.sat_flag %}checked{% endif %} 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Saturday</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="/viewCourse/" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Update Course</button>
+                </div>
+            </form>
+        </div>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower or 'invalid' in message|lower or 'empty' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
         {% endif %}
-
-
-
-  </form>
-    </table>
-    </center>
-  <p>{{message}}</p></center>
-{% endblock content %}
+    </div>
+</div>
+{% endblock %}

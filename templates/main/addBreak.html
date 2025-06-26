@@ -1,44 +1,103 @@
 {% extends "base.html" %}
+
+{% block title %}Add Break{% endblock %}
+
 {% block content %}
-    <title>TA - Add Breaks</title>
-    <ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-    <img src="/static/3.png">
-    <center>
-    <h3>Add a break to the Time Assign database:</h3>
-<form method="post" action="/addBreak/">
-  {% csrf_token %}
-    <table>
-        <tr>
-            <td>Break Name:</td>
-            <td><input type="text" name="Break Name"></td>
-        </tr>
-        <tr>
-            <td>Start Time:</td>
-            <td><input type = "time" name="startTime"></td>
-        </tr>
-        <tr>
-            <td>End Time:</td>
-            <td><input type = "time" name="endTime"></td>
-        </tr>
-        <tr>
-            <td>Day:</td>
-            <td><input type = "checkbox" name="M">M
-            <input type = "checkbox" name="T">T
-            <input type = "checkbox" name="W">W
-            <input type = "checkbox" name="R">R
-            <input type = "checkbox" name="F">F
-            <input type = "checkbox" name="S">S</td>
-        </tr>
-        <tr><td></td></tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Add"></td>
-        </tr>
-    </table>
-  </form>
-  <p>{{message}}</p>
-    </center>
-{% endblock content %}
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/3.png" alt="University Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Add Break</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Add a new break to the TimeAssign database</p>
+                </div>
+            </div>
+            <a href="/menu" class="btn-secondary">Back to Menu</a>
+        </div>
+    </header>
+
+    <div class="max-w-2xl">
+        <div class="card">
+            <form method="post" action="/addBreak/" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="break_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Break Name
+                    </label>
+                    <input type="text" name="Break Name" id="break_name" required 
+                           class="input-field mt-1" placeholder="Enter break name">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Start Time
+                        </label>
+                        <input type="time" name="startTime" id="start_time" required 
+                               class="input-field mt-1">
+                    </div>
+
+                    <div>
+                        <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            End Time
+                        </label>
+                        <input type="time" name="endTime" id="end_time" required 
+                               class="input-field mt-1">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Break Days
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="M" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Monday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="T" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Tuesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="W" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Wednesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="R" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Thursday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="F" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Friday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="S" 
+                                   class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Saturday</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="/menu" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Add Break</button>
+                </div>
+            </form>
+        </div>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower or 'invalid' in message|lower or 'empty' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,26 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
 {% extends "base.html" %}
 
+{% block title %}Edit Schedule{% endblock %}
+
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>TA - Edit Schedule</title>
-<ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-</head>
-    <img src="/static/8.png">
-<body>
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/8.png" alt="University Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Edit Schedule</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Modify schedule information and settings</p>
+                </div>
+            </div>
+            <a href="/menu" class="btn-secondary">Back to Menu</a>
+        </div>
+    </header>
 
+    <div class="max-w-4xl">
+        <div class="card">
+            <div class="text-center py-8">
+                <svg class="mx-auto h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h2 class="mt-4 text-xl font-semibold text-gray-900 dark:text-white">
+                    Schedule Management
+                </h2>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">
+                    Schedule editing functionality will be implemented here
+                </p>
+            </div>
+        </div>
 
-
-
-
-
-
-</body>
-    <p>{{message}}</p></center>
-</html>
-{% endblock content %}
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower or 'invalid' in message|lower or 'empty' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

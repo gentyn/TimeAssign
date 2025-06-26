@@ -1,27 +1,91 @@
 {% extends "base.html" %}
 
-{% block content %}
-    <title>TA - Edit Schedule</title>
-<ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-<img src="/static/5.png" alt="University of Milwaukee!">
+{% block title %}TA Edit Schedule{% endblock %}
 
-    <body>
- <form action="/addBreak" method="get">
-        <input type="submit" name="Add Break" value="Add Break">
-    </form>
-    <h3>My Schedule:</h3>
-    <p>Click on a break title to edit its information</p>
-        {% for break in breaks %}
-            {% if break.userid == request.session.member_id  %}
-                <form action="/editBreak" method="get">
-                    <input type="submit" name="Edit Break" value={{ break.break_name }}>
-                </form>
-            <p>Start Time: {{ break.start_time }} End Time: {{ break.end_time }}</p>
+{% block content %}
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/5.png" alt="University of Milwaukee" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">My Schedule</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Manage your break schedule</p>
+                </div>
+            </div>
+            <a href="/menu" class="btn-secondary">Back to Menu</a>
+        </div>
+    </header>
+
+    <div class="max-w-4xl">
+        <!-- Add Break Button -->
+        <div class="mb-6">
+            <form action="/addBreak" method="get" class="inline">
+                <button type="submit" class="btn-primary">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Break
+                </button>
+            </form>
+        </div>
+
+        <!-- Schedule List -->
+        <div class="card">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    My Breaks
+                </h2>
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Click on a break title to edit its information
+                </p>
+            </div>
+
+            {% if breaks %}
+                <div class="space-y-4">
+                    {% for break in breaks %}
+                        {% if break.userid == request.session.member_id %}
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <form action="/editBreak" method="get" class="inline">
+                                        <button type="submit" name="Edit Break" value="{{ break.break_name }}" 
+                                                class="text-lg font-medium text-uwm-gold hover:text-yellow-600 dark:hover:text-yellow-400 transition-colors">
+                                            {{ break.break_name }}
+                                        </button>
+                                    </form>
+                                    <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                                        <span class="font-medium">Time:</span> {{ break.start_time }} - {{ break.end_time }}
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-2">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-8">
+                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-white">No breaks scheduled</h3>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        Get started by adding your first break.
+                    </p>
+                </div>
             {% endif %}
-        {% endfor %}
-    </body>
-  <p>{{message}}</p>
-{% endblock content %}
+        </div>
+
+        {% if message %}
+        <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower or 'invalid' in message|lower or 'empty' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+            {{ message }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

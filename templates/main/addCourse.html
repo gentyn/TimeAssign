@@ -1,70 +1,134 @@
 {% extends "base.html" %}
+
+{% block title %}Add Course{% endblock %}
+
 {% block content %}
-    <title>TA - Add Courses</title>
-    <ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-    <img src="/static/3.png">
-    <center>
-    <h3>Add a course to the Time Assign database:</h3>
-<form method="post" action="/addCourse/">
-  {% csrf_token %}
-    <table>
-        <tr>
-            <td>Course Name:</td>
-            <td><input type="text" name="Course Name"></td>
-        </tr>
-        <tr>
-            <td>Start Time:</td>
-            <td><input type = "time" name="startTime" min="07:00" max="20:50"></td>
-        </tr>
-        <tr>
-            <td>End Time:</td>
-            <td><input type = "time" name="endTime" min="07:00" max="20:50"></td>
-        </tr>
-        <tr>
-            <td>Day:</td>
-            <td><input type = "checkbox" name="M">M
-            <input type = "checkbox" name="T">T
-            <input type = "checkbox" name="W">W
-            <input type = "checkbox" name="R">R
-            <input type = "checkbox" name="F">F
-            <input type = "checkbox" name="S">S</td>
-        </tr>
-        <tr>
-            <td>Course Type:</td>
-            <td><select class = "select" name="CourseType">
-                <option value = 'LEC'> Lecture </option>
-                <option value = 'LAB'> Lab </option>
-                <option value = 'ON'> Online </option>
-                <option value = 'GRD'> Grading </option>
-            </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Ta:</td>
-            <td><input type = "text" name="ta"></td>
-        </tr>
-        <tr>
-            <td>Instructor:</td>
-            <td><input type = "text" name="instructor"></td>
-        </tr>
-        <tr>
-             <td>Lecture (if lab)</td>
-             <td><select class = "select" name="availablelectures" id="availablelectures">
-                 <option value= 0 > None </option>
-                {%  for i in courses %}
-                    <option value="{{ i.id }}">{{i.course_name}}    </option>
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/7.png" alt="University Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Course Management</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">Add and manage courses</p>
+                </div>
+            </div>
+            <a href="/viewCourse/" class="btn-secondary">View Courses</a>
+        </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Add Course Form -->
+        <div class="card">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Add New Course</h2>
+            <form method="post" action="/addCourse/" class="space-y-6">
+                {% csrf_token %}
+                
+                <div>
+                    <label for="course_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Course Name
+                    </label>
+                    <input type="text" name="Course Name" id="course_name" required 
+                           class="input-field mt-1" placeholder="Enter course name">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="start_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Start Time
+                        </label>
+                        <input type="time" name="start_time" id="start_time" required 
+                               class="input-field mt-1">
+                    </div>
+
+                    <div>
+                        <label for="end_time" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            End Time
+                        </label>
+                        <input type="time" name="end_time" id="end_time" required 
+                               class="input-field mt-1">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Course Days
+                    </label>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <label class="flex items-center">
+                            <input type="checkbox" name="mon_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Monday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="tues_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Tuesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="wed_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Wednesday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="thurs_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Thursday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="fri_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Friday</span>
+                        </label>
+                        <label class="flex items-center">
+                            <input type="checkbox" name="sat_flag" class="rounded border-gray-300 text-uwm-gold focus:ring-uwm-gold">
+                            <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Saturday</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="flex justify-end space-x-4">
+                    <a href="/menu/" class="btn-secondary">Cancel</a>
+                    <button type="submit" class="btn-primary">Add Course</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Existing Courses -->
+        <div class="card">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-6">Existing Courses</h2>
+            {% if courses %}
+            <div class="space-y-4">
+                {% for course in courses %}
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-medium text-gray-900 dark:text-white">{{ course.course_name }}</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                {{ course.start_time|time:"g:i A" }} - {{ course.end_time|time:"g:i A" }}
+                            </p>
+                            <div class="flex flex-wrap gap-1 mt-2">
+                                {% if course.mon_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Mon</span>{% endif %}
+                                {% if course.tues_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Tue</span>{% endif %}
+                                {% if course.wed_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Wed</span>{% endif %}
+                                {% if course.thurs_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Thu</span>{% endif %}
+                                {% if course.fri_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Fri</span>{% endif %}
+                                {% if course.sat_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Sat</span>{% endif %}
+                            </div>
+                        </div>
+                        <a href="/editCourse/?Edit%20Course={{ course.course_name }}" 
+                           class="text-uwm-gold hover:text-uwm-gold/80 text-sm font-medium">
+                            Edit
+                        </a>
+                    </div>
+                </div>
                 {% endfor %}
-                </select>
-             </td>
-        </tr>
-        <tr>
-            <td><input type="submit"></td>
-        </tr>
-    </table>
-  </form>
-  <p>{{message}}</p>
-    </center>
-{% endblock content %}
+            </div>
+            {% else %}
+            <p class="text-gray-500 dark:text-gray-400 text-center py-8">No courses found</p>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if message %}
+    <div class="mt-6 p-4 rounded-lg {% if 'error' in message|lower or 'failed' in message|lower %}bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-200{% else %}bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-200{% endif %}">
+        {{ message }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -11,7 +11,12 @@ from ta_app.models import inputHandler, myUser, Course, Break
 # Create your views here.
 class Home(View):
     def get(self, request):
-        return render(request, 'main/index.html')
+        # Check if user is already logged in and redirect to menu
+        try:
+            currentUserType = request.session["userType"]
+            return redirect('/menu/')
+        except KeyError:
+            return render(request, 'main/index.html')
 
     def post(self, request):
         loginInstrance = login.myUserLogin()
@@ -21,7 +26,7 @@ class Home(View):
         # return render(request, 'main/index.html', {"message": "Login Success"})
         # login succeded, proceed to main menu page.
         elif loginString == "already logged in":
-            return render(request, 'main/index.html', {"message": "Already logged in"})
+            return redirect('/menu/')  # Redirect to menu instead of showing message
             # we need to check the session here in our site logic, we will no longer be using the database model.
         elif loginString == "Incorrect password":
             return render(request, 'main/index.html', {"message": "Login Failed"})
@@ -33,17 +38,36 @@ class MenuView(
     def get(self, request):
         try:
             currentUserType = request.session["userType"]
+            member_id = request.session["member_id"]
         except KeyError:
-            return redirect('/logout')  # redirect to logout if no user is logged in. This will display
-            # The "No User Logged in" Message
+            return redirect('/logout')  # redirect to logout if no user is logged in
+        
+        # Get user information for welcome message
+        try:
+            from ta_app.models import myUser
+            user = myUser.objects.get(id=member_id)
+            user_name = user.name
+        except:
+            user_name = "User"  # Fallback if user not found
+        
         if currentUserType == 'chair':
-            return render(request, 'main/ChairMenu.html', {'message': request.session['userType']})
-        elif currentUserType == 'instructor':
-            return render(request, 'main/instructorMenu.html', {'message': request.session['userType']})
-        elif currentUserType == 'Instructor':
-            return render(request, 'main/instructorMenu.html', {'message': request.session['userType']})
-        elif currentUserType == 'ta' or 'TA': #for some reason, or works here, but does not work in instructor or chair.
-            return render(request, 'main/TAMenu.html', {'message': request.session['userType']})
+            return render(request, 'main/chairMenu.html', {
+                'message': request.session['userType'],
+                'user_name': user_name,
+                'user_type': currentUserType
+            })
+        elif currentUserType == 'instructor' or currentUserType == 'Instructor':
+            return render(request, 'main/instructorMenu.html', {
+                'message': request.session['userType'],
+                'user_name': user_name,
+                'user_type': currentUserType
+            })
+        elif currentUserType == 'ta' or currentUserType == 'TA':
+            return render(request, 'main/TAMenu.html', {
+                'message': request.session['userType'],
+                'user_name': user_name,
+                'user_type': currentUserType
+            })
         # this is where we check the current users login status, and post results for user type
 
     def post(self, request):

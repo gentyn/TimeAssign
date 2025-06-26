@@ -1,23 +1,67 @@
 {% extends "base.html" %}
+
+{% block title %}TA Dashboard{% endblock %}
+
 {% block content %}
-<title>TA - Menu</title>
-<body>
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center mb-4">
+            <img src="/static/4.png" alt="University Logo" class="h-16 mr-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">TA Dashboard</h1>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">
+                    Welcome to the TA menu, {{ user_name }}!
+                </p>
+            </div>
+        </div>
+    </header>
 
-<ul>
-  <li><a href="/editSchedule">Edit Schedule</a></li>
-    <li><a href="/validate">Validate</a></li>
-  <li><a href="http://www.robtyndall.com">TA appreciation page</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Schedule Management -->
+        <div class="card hover:shadow-lg transition-shadow">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Schedule Management</h2>
+            </div>
+            <div class="space-y-3">
+                <a href="/editSchedule/" class="btn-primary block text-center">Edit Schedule</a>
+            </div>
+        </div>
 
-<img src="/static/10.png" alt="University of Milwaukee!">
+        <!-- Break Management -->
+        <div class="card hover:shadow-lg transition-shadow">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Break Management</h2>
+            </div>
+            <div class="space-y-3">
+                <a href="/addBreak/" class="btn-primary block text-center">Add Break</a>
+                <a href="/editBreak/" class="btn-secondary block text-center">Edit Breaks</a>
+            </div>
+        </div>
 
-  {% csrf_token %}
-    <ul>
-        <li><a>Welcome to the {{message}} main menu!</a></li>
-
-    </ul>
-{% endblock content %}
-
-</body>
-</html>
+        <!-- Course Overview -->
+        <div class="card hover:shadow-lg transition-shadow">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Course Overview</h2>
+            </div>
+            <div class="space-y-3">
+                <a href="/viewCourse/" class="btn-secondary block text-center">View Courses</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

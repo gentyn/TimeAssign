@@ -1,21 +1,106 @@
 {% extends "base.html" %}
+
+{% block title %}View Courses{% endblock %}
+
 {% block content %}
-    <title>TA - View Courses</title>
-    <ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-    <img src="/static/11.png">
-    <center>
-    <h3>Courses in the Time Assign database:</h3>
-    <p>Click on a course title to edit its information</p>
-        {% for course in courses %}
-                <form action="/editCourse" method="get">
-                    <input type="submit" name="Edit Course" value={{ course.course_name }}>
-                </form>
-            <p>Start Time: {{ course.start_time }} End Time: {{ course.end_time }}
-                Instructor: {{ course.instructor }} TA(s): {{ course.ta }}</p>
-        {% endfor %}
-  {% csrf_token %}
-  <p>{{message}}</p></center>
-{% endblock content %}
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center">
+                <img src="/static/8.png" alt="University Logo" class="h-16 mr-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Course Management</h1>
+                    <p class="mt-2 text-gray-600 dark:text-gray-400">View and manage all courses</p>
+                </div>
+            </div>
+            <a href="/addCourse/" class="btn-primary">Add New Course</a>
+        </div>
+    </header>
+
+    <div class="card">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-gray-800">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Course Name
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Time
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Days
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Type
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Instructor
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                    {% for course in courses %}
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900 dark:text-white">
+                                {{ course.course_name }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900 dark:text-white">
+                                {{ course.start_time|time:"g:i A" }} - {{ course.end_time|time:"g:i A" }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex flex-wrap gap-1">
+                                {% if course.mon_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Mon</span>{% endif %}
+                                {% if course.tues_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Tue</span>{% endif %}
+                                {% if course.wed_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Wed</span>{% endif %}
+                                {% if course.thurs_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Thu</span>{% endif %}
+                                {% if course.fri_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Fri</span>{% endif %}
+                                {% if course.sat_flag %}<span class="px-2 py-1 text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded">Sat</span>{% endif %}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                {% if course.coursetype == 'LEC' %}bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200
+                                {% elif course.coursetype == 'LAB' %}bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200
+                                {% elif course.coursetype == 'ON' %}bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200
+                                {% else %}bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200{% endif %}">
+                                {{ course.coursetype }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                            {{ course.instructor|default:"Not assigned" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            <a href="/editCourse/?Edit%20Course={{ course.course_name }}" 
+                               class="text-uwm-gold hover:text-uwm-gold/80">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                            No courses found
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-6 flex justify-between items-center">
+        <a href="/menu/" class="btn-secondary">Back to Menu</a>
+        <div class="text-sm text-gray-500 dark:text-gray-400">
+            Total Courses: {{ courses|length }}
+        </div>
+    </div>
+</div>
+{% endblock %}

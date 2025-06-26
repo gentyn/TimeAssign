@@ -2,29 +2,150 @@
 <html lang="en">
 {% extends "base.html" %}
 
+{% block title %}Schedule Validation{% endblock %}
+
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>TA - Validate</title>
-<ul>
-  <li><a href="/menu">Main Menu</a></li>
-  <li style="float:right"><a class="active" href="/logout">Logout</a></li>
-</ul>
-<img src="/static/12.png" alt="University of Milwaukee!">
-</head>
-<body>
-    <p>{{message}}</p></center>
-    <ul>
-        {% for i in conflicts %}
-            <li>{{ i.course_name }} {{ i.start_time }} - {{ i.end_time }}
-            {% if i.mon_flag == True %}M{% endif %}
-            {% if i.tues_flag == True %}T{% endif %}
-            {% if i.wed_flag == True %}W{% endif %}
-            {% if i.thurs_flag == True %}R{% endif %}
-            {% if i.fri_flag == True %}F{% endif %}
-            {% if i.sat_flag == True %}S{% endif %}</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
-{% endblock content %}
+<div class="py-6">
+    <header class="mb-8">
+        <div class="flex items-center mb-4">
+            <img src="/static/11.png" alt="University Logo" class="h-16 mr-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Schedule Validation</h1>
+                <p class="mt-2 text-gray-600 dark:text-gray-400">Check for scheduling conflicts and validation issues</p>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-4xl">
+        <!-- Validation Results -->
+        <div class="card">
+            <div class="flex items-center mb-6">
+                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Validation Results</h2>
+            </div>
+
+            <div class="mb-6">
+                <p class="text-gray-700 dark:text-gray-300">{{ message }}</p>
+            </div>
+
+            {% if conflicts %}
+            <div class="space-y-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">Detected Conflicts:</h3>
+                {% for conflict in conflicts %}
+                <div class="border border-red-200 dark:border-red-800 rounded-lg p-4 bg-red-50 dark:bg-red-900/20">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-medium text-red-800 dark:text-red-200">
+                                {{ conflict.course_name }}
+                            </h4>
+                            <div class="mt-1 text-sm text-red-700 dark:text-red-300">
+                                <p><strong>Time:</strong> {{ conflict.start_time|time:"g:i A" }} - {{ conflict.end_time|time:"g:i A" }}</p>
+                                <p><strong>Days:</strong> 
+                                    {% if conflict.mon_flag %}Mon {% endif %}
+                                    {% if conflict.tues_flag %}Tue {% endif %}
+                                    {% if conflict.wed_flag %}Wed {% endif %}
+                                    {% if conflict.thurs_flag %}Thu {% endif %}
+                                    {% if conflict.fri_flag %}Fri {% endif %}
+                                    {% if conflict.sat_flag %}Sat {% endif %}
+                                </p>
+                                {% if conflict.conflict_details %}
+                                <p><strong>Conflict:</strong> {{ conflict.conflict_details }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center py-8">
+                <div class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">No Conflicts Found</h3>
+                <p class="text-gray-600 dark:text-gray-400">All schedules are valid and conflict-free!</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Validation Information -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">What We Check</h3>
+                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Time overlaps between courses
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        TA schedule conflicts
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Instructor availability
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Room scheduling conflicts
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-3">Next Steps</h3>
+                <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Review any detected conflicts
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Adjust course schedules if needed
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Reassign TAs if necessary
+                    </li>
+                    <li class="flex items-start">
+                        <svg class="w-4 h-4 text-uwm-gold mt-0.5 mr-2 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                        </svg>
+                        Run validation again after changes
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-between items-center">
+            <a href="/menu/" class="btn-secondary">Back to Menu</a>
+            <button onclick="location.reload()" class="btn-primary">Run Validation Again</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
