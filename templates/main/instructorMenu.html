@@ -3,62 +3,134 @@
 {% block title %}Instructor Dashboard{% endblock %}
 
 {% block content %}
-<div class="py-6">
-    <header class="mb-8">
-        <div class="flex items-center mb-4">
-            <img src="/static/3.png" alt="University Logo" class="h-16 mr-4">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Instructor Dashboard</h1>
-                <p class="mt-2 text-gray-600 dark:text-gray-400">
-                    Welcome to the Instructor menu, {{ user_name }}!
+<div class="min-h-[calc(100vh-200px)]">
+    <!-- Welcome Section -->
+    <div class="text-center mb-12">
+        <div class="flex items-center justify-center mb-6">
+            <img src="/static/3.png" alt="University Logo" class="h-20 mr-6">
+            <div class="text-left">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">Instructor Dashboard</h1>
+                <p class="text-lg text-gray-600 dark:text-gray-400">
+                    Welcome back, {{ user_name }}! Manage your courses and TA assignments.
                 </p>
             </div>
         </div>
-    </header>
+    </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Course Assignments -->
-        <div class="card hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
-                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- Quick Stats -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg p-6 text-white shadow-lg">
+            <div class="flex items-center">
+                <div class="p-3 bg-white/20 rounded-lg mr-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm opacity-90">My Courses</p>
+                    <p class="text-2xl font-bold">3</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-lg p-6 text-white shadow-lg">
+            <div class="flex items-center">
+                <div class="p-3 bg-white/20 rounded-lg mr-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-sm opacity-90">Assigned TAs</p>
+                    <p class="text-2xl font-bold">4</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-gradient-to-r from-purple-500 to-purple-600 rounded-lg p-6 text-white shadow-lg">
+            <div class="flex items-center">
+                <div class="p-3 bg-white/20 rounded-lg mr-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Course Assignments</h2>
+                <div>
+                    <p class="text-sm opacity-90">Valid Schedule</p>
+                    <p class="text-2xl font-bold">✓</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Course Assignments -->
+        <div class="card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-blue-500">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Course Assignments</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Assign TAs to your courses</p>
+                </div>
             </div>
             <div class="space-y-3">
-                <a href="/instructor_assignToCourse/" class="btn-primary block text-center">Assign TAs to Courses</a>
+                <a href="/instructor_assignToCourse/" class="btn-primary block text-center py-3 font-semibold">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                    Assign TAs to Courses
+                </a>
             </div>
         </div>
 
         <!-- Schedule Management -->
-        <div class="card hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
-                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-green-500">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Schedule Management</h2>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Schedule Management</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Validate course schedules</p>
+                </div>
             </div>
             <div class="space-y-3">
-                <a href="/validate/" class="btn-secondary block text-center">Validate Schedules</a>
+                <a href="/validate/" class="btn-secondary block text-center py-3 font-semibold">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Validate Schedules
+                </a>
             </div>
         </div>
 
         <!-- Course Overview -->
-        <div class="card hover:shadow-lg transition-shadow">
-            <div class="flex items-center mb-4">
-                <div class="w-10 h-10 bg-uwm-gold rounded-lg flex items-center justify-center mr-3">
-                    <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="card hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border-l-4 border-purple-500">
+            <div class="flex items-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4 shadow-lg">
+                    <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                     </svg>
                 </div>
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Course Overview</h2>
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Course Overview</h2>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">View all department courses</p>
+                </div>
             </div>
             <div class="space-y-3">
-                <a href="/viewCourse/" class="btn-secondary block text-center">View Courses</a>
+                <a href="/viewCourse/" class="btn-secondary block text-center py-3 font-semibold">
+                    <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    View Courses
+                </a>
             </div>
         </div>
     </div>
